@@ -1,13 +1,12 @@
 const express = require('express');
 const route = express.Router();
-
 const urlController = require("../controller/urlController");
 
-
+// -----------------create url--------------------
 route.post("/url/shorten",urlController.createUrl)
 
+// ---------------get url-------------------------
 route.get("/:urlCode",urlController.getUrl)
-
 
 
 route.all("/*", function (req, res) {

@@ -6,20 +6,17 @@ const { promisify } = require("util");
 
 //Connect to redis
 const redisClient = redis.createClient(
-    15893,
-    "redis-15893.c301.ap-south-1-1.ec2.cloud.redislabs.com",
+    13733,
+    "redis-13733.c301.ap-south-1-1.ec2.cloud.redislabs.com",
     { no_ready_check: true }
 );
-redisClient.auth("ROAPpFNqbTN8hsjyRzO4z96Lb9NLHJhV", function (err) {
+redisClient.auth("GpklgTxv6tlIlisnpHQ9QEmvagsBda4j", function (err) {
     if (err) throw err;
 });
 
 redisClient.on("connect", async function () {
     console.log("Connected to Redis..");
 });
-
-
-
 //1. connect to the server
 //2. use the commands :
 
@@ -29,7 +26,7 @@ const SET_ASYNC = promisify(redisClient.SET).bind(redisClient)
 const GET_ASYNC = promisify(redisClient.GET).bind(redisClient)
 
 
-//==================================================Validation===========================================================
+//==================================================Validation===================================================
 const isValid = function (value) {
     if (typeof value !== "string" || value.trim().length == 0) {
         return false
@@ -37,16 +34,12 @@ const isValid = function (value) {
     return true
 };
 
-
 let isValidUrl = (value) => {
-    let urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)/
-
-
-        ;
+    let urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)/;
     return urlRegex.test(value)
 
 }
-//===============================================short Url=================================================================//
+//===============================================short Url==============================================================
 const createUrl = async function (req, res) {
     try {
         let body = req.body;
@@ -70,16 +63,12 @@ const createUrl = async function (req, res) {
             return res.status(400).send({ status: false, message: "please provide valid Url" })
         }
 
-
-
         let short = shortid.generate(longUrl)
-
 
         if (!short) {
             return res.status(400).send({ status: false, msg: short })
         }
-
-
+        
         let obj = { longUrl, shortUrl: `http://localhost:3000/${short}` }
         obj.urlCode = short.toLowerCase()
 
@@ -89,10 +78,7 @@ const createUrl = async function (req, res) {
         } else {
             let setUrlCode = obj.urlCode
             let setInCache = await SET_ASYNC(`${setUrlCode}`, JSON.stringify(obj))
-
         }
-
-
         let Data = await urlModel.create(obj)
         return res.status(201).send({ status: true, data: obj })
 

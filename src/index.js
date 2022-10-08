@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json()); 
 
 
-mongoose.connect("mongodb+srv://ShailyTripathi:ShailyCompass2125@shailytripathi.ifjbsp5.mongodb.net/group54Database?retryWrites=true&w=majority", {
+mongoose.connect("mongodb+srv://functionup-cohort:Vrvn1212@cluster0.jn5ja3l.mongodb.net/blogging-site?retryWrites=true&w=majority", {
     useNewUrlParser: true
 })
 .then( () => console.log("MongoDb is connected"))
@@ -15,8 +15,6 @@ mongoose.connect("mongodb+srv://ShailyTripathi:ShailyCompass2125@shailytripathi.
 
 
  app.use('/', route);
-
-
 
 
 
